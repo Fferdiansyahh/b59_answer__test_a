@@ -1,0 +1,70 @@
+{{#> layout title='My Project'}}
+
+  <main class="contact-section">
+      
+
+    <section class="blog-container">
+       <a class="btn btn-add  position-absolute top-0 end-0 translate-middle-y" href="/project-add">Add Project</a>
+      <div class=" project-title text-center">
+              <p class="">MY PROJECT </p>             
+              </div>
+      <div id="blogList" class="blog-list">     
+
+          {{#each blogs }}
+         <div id="${i}" class="blog-list-item">
+          <div class="blog-image-title">
+            <div class="blog-image">
+              <a href="/project-detail/{{this.id}}" >
+              <img src={{this.image}} alt="blog-image" />
+              </a>
+            </div>
+            <div>
+              <p>
+                <a href="/project-detail/{{this.id}}" class="blog-item-title">
+                   {{this.name}}
+                </a>
+              </p>
+              <div>
+                <p class="detail-blog-content"> Duration : {{getDuring this.sdate this.edate}}</p>
+                <p>{{formatDataToWIB this.createdAt}}</p>   
+                
+                {{!-- <p>{{this.technologies}} </p> --}}
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="blog-text">
+            {{truncateText this.message}}
+            </p>
+            <p class="relative-time">{{getRelativeTime this.createdAt}}</p>
+          </div>
+          <div id="menu" class="d-flex justify-content-center">
+            <img class="{{classIconsa this.technologies}}" src="{{attributeIconsa this.technologies}}" alt=""></img> 
+            <img class="{{classIconsb this.technologies}}" src="{{attributeIconsb this.technologies}}" alt=""></img>
+            <img class="{{classIconsc this.technologies}}" src="{{attributeIconsc this.technologies}}" alt=""></img>
+            <img class="{{classIconsd this.technologies}}" src="{{attributeIconsd this.technologies}}" alt=""></img> 
+           
+          </div>
+          <div class="blog-content">
+            <div class="btn-group">              
+             <a href="/project-edit/{{this.id}} " class="col"><button class="btn-edit">Edit</button></a>                             
+              <form action="/delete-project{{this.id}}?_method=delete" method="post">
+              <button onclick="return confirm('Are you sure want to delete?')"  type="submit" class="btn-delete">Delete</button>
+              </form>
+            </div>
+          </div>
+          </div>
+          {{else}}
+          <p>Belum ada yang di post</p> 
+          {{/each}}
+
+
+
+        {{!-- <script src="/Asset/js/submitForm.js"></script> --}}
+      </div>
+    </section>
+
+  </main>
+
+
+{{/layout}}

@@ -1,0 +1,34 @@
+{
+  "name": "b59-personal-web",
+  "version": "1.0.0",
+  "description": "websitet pernoal web batch 59",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "db-migrate": "npx sequelize-cli db:migrate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fferdiansyahh/b59-personal-web.git"
+  },
+  "author": "Ferdian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fferdiansyahh/b59-personal-web/issues"
+  },
+  "homepage": "https://github.com/Fferdiansyahh/b59-personal-web#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "hbs": "^4.2.0",
+    "method-override": "^3.0.0",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "sequelize-cli": "^6.6.2"
+  }
+}
