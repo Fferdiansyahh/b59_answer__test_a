@@ -5,7 +5,7 @@
 body {
   margin: 0px;
   font-family: "Poppins", sans-serif;
-  background-color: #e3e7eb;
+  background-color: #bdc0c4;
 }
 
 /* Home Page Styles Start */
@@ -16,8 +16,10 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 5px 30px;
-  height: 45px;
+  height: 60px;
   width: auto;
+  /* position: -webkit-sticky; */
+  position: sticky;
 }
 
 nav a {
@@ -63,7 +65,7 @@ nav a {
 
 /* Home Page Styles End */
 .main1 {
-  background-color: #e2e6ea;
+  background-color: #969696;
   padding: 50px 45px;
 }
 
@@ -74,13 +76,16 @@ nav a {
   height: 100%;
   border-radius: 5px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .kotak2 {
   border: 1px solid white;
-  height: max-content;
+  height: 100%;
   display: flex;
-  flex-direction: row;
+  flex: auto;
+
+  /* flex-direction: row; */
   align-items: center;
   gap: 30px;
   padding: 50px;
@@ -90,8 +95,10 @@ nav a {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  height: 70%;
+  height: 100%;
+
   margin: 30px 10px;
+  box-sizing: border-box;
 }
 
 .k1 {
@@ -148,9 +155,10 @@ nav a {
   /* margin: 0px 200px; */
   /* margin-bottom: 30px; */
   align-items: center;
+  box-sizing: border-box;
+  width: 170%;
+  height: max-content;
 
-  width: 110%;
-  height: 60%;
   border: 1px solid white;
   border-radius: 5px;
 
@@ -161,11 +169,15 @@ nav a {
 
 .gb {
   width: 100%;
+  /* box-sizing: border-box; */
+  /* object-fit: contain; */
+  /* clear: both; */
+  /* display: table; */
+  /* margin-bottom: 20px;  */
+}
 
-  object-fit: contain;
-  clear: both;
-  display: table;
-  margin-bottom: 20px;
+.kotakb div {
+  text-align: center;
 }
 
 .btu {
@@ -229,11 +241,13 @@ nav a {
   }
 
   .kotakb {
-    width: 75%;
+    width: 60%;
   }
 
   .kotakb img {
-    height: 20%;
+    /* height: 20%; */
+    width: 100%;
+    box-sizing: content-box;
   }
 
   .k1 {
