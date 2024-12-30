@@ -60,10 +60,13 @@ async function renderProjectDetail(req, res) {
   console.log(projectDetail);
   res.render("project-detail", { data: projectDetail[0] });
 }
+
+
 async function delProject(req, res) {
   const { id } = req.params;
   const query = `DELETE FROM public."Myprojects"
                 WHERE id= ${id} `;
+              
   const result = await sequelize.query(query, { type: QueryTypes.DELETE });
   console.log("Result Query Delete :", result);
   res.redirect("myproject");

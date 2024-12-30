@@ -71,7 +71,7 @@ function filterTestimonialByStar(rating) {
   console.log(filteredTestimonial);
 
   if (filteredTestimonial.length === 0) {
-    return (testimonialsContainer.innerHTML = `<p>No testimonials.</p>`);
+    return (testimonialsContainer.innerHTML = `<div class="w-100 text-center"><h5>No testimonials.</h5></div>`);
   }
 
   setTimeout(() => {

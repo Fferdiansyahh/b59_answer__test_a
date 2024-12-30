@@ -49,7 +49,8 @@
             <div class="btn-group">              
              <a href="/project-edit/{{this.id}} " class="col"><button class="btn-edit">Edit</button></a>                             
               <form action="/delete-project{{this.id}}?_method=delete" method="post">
-              <button onclick="return confirm('Are you sure want to delete?')"  type="submit" class="btn-delete">Delete</button>
+              <button id="alertDel"  onclick="return alertDelete(event)"  type="submit" class="btn-delete">Delete</button>
+              {{!-- onclick="return confirm('Are you sure want to delete?')" --}}
               </form>
             </div>
           </div>

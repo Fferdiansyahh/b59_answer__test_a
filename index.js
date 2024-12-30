@@ -27,7 +27,7 @@ const {
   formatDate,
   formatNow,
 } = require("./utils/time.js");
-const { truncateText } = require("./utils/text.js");
+const { truncateText, alertDelete } = require("./utils/text.js");
 const {
   checkboxInputa,
   checkboxInputb,
@@ -60,6 +60,7 @@ hbs.registerHelper("formatDataToWIB", formatDataToWIB);
 hbs.registerHelper("formatDate", formatDate);
 hbs.registerHelper("formatNow", formatNow);
 hbs.registerHelper("truncateText", truncateText);
+hbs.registerHelper("alertDelete", alertDelete);
 hbs.registerHelper("checkboxInputa", checkboxInputa);
 hbs.registerHelper("checkboxInputb", checkboxInputb);
 hbs.registerHelper("checkboxInputc", checkboxInputc);
