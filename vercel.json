@@ -12,12 +12,12 @@
       "dest": "index.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/asset(.*)",
       "dest": "/myproject"
     },
     {
       "src": "/asset(.*)",
-      "dest": "/"
+      "dest": "/testimonial"
     }
   ],
   "buildCommand": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
