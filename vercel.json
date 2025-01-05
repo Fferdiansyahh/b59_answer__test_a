@@ -9,15 +9,8 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/assets/(.*)"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/myproject"
+      "dest": "index.js"
     }
-  ]
+  ],
+  "buildCommand": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
 }
