@@ -10,6 +10,14 @@
     {
       "src": "/(.*)",
       "dest": "index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/myproject"
+    },
+    {
+      "src": "/asset(.*)",
+      "dest": "/"
     }
   ],
   "buildCommand": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
