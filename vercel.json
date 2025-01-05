@@ -16,8 +16,8 @@
       "dest": "/myproject"
     },
     {
-      "src": "/asset(.*)",
-      "dest": "/testimonial"
+      "src": "/asset/css/(.*)",
+      "dest": "bootstrap.min.css"
     }
   ],
   "buildCommand": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
