@@ -33,7 +33,16 @@
           </a>
         </li>
       </ul> 
-      <a class="btn btn-orange " href="/contact">Contact Me</a>
+      <div style="display: flex; align-items:center; width:50%; justify-content:end; gap: 20px; ">
+        {{#if user}}
+        Hello, {{user.username}}
+        <a class="nav-link " href="/logout">Logout</a>
+        {{else}}
+        <a class="nav-link " href="/register">Register</a>
+        <a class="nav-link " href="/login">Login</a>
+         {{/if}}
+        <a class="btn btn-orange " href="/contact">Contact Me</a>
+      </div>
     </div>
   </div>
 </nav>

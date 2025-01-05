@@ -1,4 +1,4 @@
-{{#> layout title='Project Detail'}}
+{{#> layout title='Project Detail' user=user}}
   <main>
     <section class="blog-container">
       <div class="blog-detail-container">
@@ -7,8 +7,8 @@
           <img class="blog-detail-image" src={{data.image}} alt="Detail Blog Image">
         <div class="detail-content">
           <p class="detail-blog-content"> Duration : {{getDuring data.sdate data.edate}}</p>
-          <p>{{formatDataToWIB data.createdAt}}</p>
-           <p>Tech : {{data.technologies}} </p>
+          <p>{{formatDataToWIB data.createdAt}} | {{data.user.username}}</p> 
+           <p>Tech : {{textTechnologies data.technologies}} </p>
         <p >{{data.message}}</p>
         <p class="relative-time">{{getRelativeTime data.postedAt}}</p>
         </div>

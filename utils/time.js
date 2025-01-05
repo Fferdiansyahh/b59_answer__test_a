@@ -61,14 +61,15 @@ function getRelativeTime(targetDate) {
   }
 
   let diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 60) {
-    return `${diffInHours} minute${diffInHours > 1 ? "s" : ""} ago`;
+  if (diffInHours < 24) {
+    return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
   }
 
-  let diffInMonths = Math.floor(diffInHours / 60);
-  if (diffInMonths < 60) {
-    return `${diffInMonths} minute${diffInMonths > 1 ? "s" : ""} ago`;
+  let diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 24) {
+    return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
   }
+  // console.log(diffInDays);
 }
 
 function getDuring(sDate, eDate) {
@@ -88,14 +89,10 @@ function getDuring(sDate, eDate) {
   //   console.log(diffInDaysss, diffInMonthss);
 }
 
-
-
 module.exports = {
   formatDataToWIB,
   formatDate,
   formatNow,
   getRelativeTime,
   getDuring,
-
-  
 };

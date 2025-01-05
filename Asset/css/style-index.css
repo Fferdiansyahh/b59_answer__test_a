@@ -345,3 +345,11 @@ nav a {
   color: white;
   margin: 25px 15px;
 }
+
+.my-div {
+  width: 100px;
+  height: 100px;
+  background-color: orange;
+  margin: 10px;
+  border-radius: 10px;
+}

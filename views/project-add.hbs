@@ -1,7 +1,7 @@
-{{#> layout title='Create Project'}}
+{{#> layout title='Create Project' user=user}}
 
   <main class="contact-section">
-    <form action="/myproject" method="post" class="contact-form">
+    <form action="/project-add" method="post" class="contact-form" enctype="multipart/form-data">
       <div class="form-title">
         <h2>ADD MY PROJECT</h2>
       </div>
@@ -49,20 +49,18 @@
         </div>
       </div>
 
-
-      <div class="form-field-image">
-        <label for="upload-image">Upload Image</label>
-        <div for="upload-image" class="input-image">
-          <div class="choose">
-            <label for="upload-image">choose</label>
-          </div>
-          <input id="upload-image" name="upload-image" hidden type="file"  placeholder="upload image" />
-        </div>
+      <div class="form-field-image">       
+        <label for="image" class="form-label">Upload Image</label>
+          <input id="image" name="image" class="form-control" type="file" accept=".png, .jpg, .jpeg">
       </div>
-      <div class="form-button"><button type="submit" class="form-submit-button">Submit</button></div>
+<div>
+<img id="preview" src="#" alt="image preview" class="img-thumbnail d-none" style="max-height: 300px;"></img>
+</div>
+      <div class="form-button"><button type="submit" class="form-submit-button">Post Project</button></div>
     </form>
 
-  
+
+  <script src="/asset/js/image-preview.js"></script>
 
     
   </main>

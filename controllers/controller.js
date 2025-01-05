@@ -93,9 +93,7 @@ function renderTestimonial(req, res) {
 function renderContact(req, res) {
   res.render("contact");
 }
-function renderBlog(req, res) {
-  res.render("blog");
-}
+
 function render404(req, res) {
   res.render("Halaman ini tidak ada");
 }
@@ -109,7 +107,7 @@ module.exports = {
   updateProject,
   renderTestimonial,
   renderContact,
-  renderBlog,
+ 
   render404,
   addProject,
   delProject,

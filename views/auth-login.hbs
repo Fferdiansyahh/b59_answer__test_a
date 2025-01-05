@@ -1,0 +1,50 @@
+{{#> layout title='Login' user=user}}
+
+  <main class="contact-section">
+    <form action="/login" method="post" class="contact-form">
+      <div class="form-title">
+        <h2>LOGIN</h2>
+      </div>
+<div class="d-flex flex-column gap-3">
+           <div class="form-field mt-3">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" class="form-input" type="text"  placeholder="email@mail.com"  />
+      </div>
+       <div class="form-field mt-3">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" class="form-input" type="text"  placeholder="Password ( character)"  />
+      </div>
+<div></div>
+
+{{#if messages.error}}
+
+<div class="alert alert-danger" role="alert">
+  {{messages.error}}
+</div>
+{{/if}}
+{{#if messages.success}}
+<div class="alert alert-success" role="alert">
+  {{messages.success}}
+</div>
+{{/if}}
+
+</div>
+
+  <div class="form-button"><button type="submit" class="form-submit-button">Submit</button></div>
+    </form>
+       
+
+     
+      
+       
+     
+
+     
+    
+
+  
+
+    
+  </main>
+
+{{/layout}}

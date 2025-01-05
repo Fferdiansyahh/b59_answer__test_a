@@ -27,7 +27,15 @@ function alertDelete(event) {
   });
 }
 
+function textTechnologies(tech) {
+  const text = tech.toString(", ");
+  // let text = tech;
+  console.log(text);
+  return text;
+}
+
 module.exports = {
   truncateText,
   alertDelete,
+  textTechnologies,
 };
