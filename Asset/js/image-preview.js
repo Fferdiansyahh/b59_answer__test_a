@@ -1,4 +1,13 @@
-// const { Myproject, User } = require("../models");
+// const { Heroes, User } = require("../models");
+
+// document.getElementById("email").addEventListener("change", function (event) {
+//   Swal.fire({
+//     title: "Edited!",
+//     text: "Heroes has been edited .",
+//     icon: "Success",
+//     background: "#1d2333",
+//   });
+// });
 
 document.getElementById("image").addEventListener("change", function (event) {
   const preview = document.getElementById("preview");
@@ -16,13 +25,11 @@ document.getElementById("image").addEventListener("change", function (event) {
   }
 });
 
-// const projectEdit = await Myproject.findOne({ where: { id } });
-// const { username } = req.body;
-// if (username !== null) {
-//   console.log("Hasil Gambar Edit", projectEdit.image);
-//   const reader = new FileReader();
-//   reader.onload = function () {
-//     preview.src = projectEdit.image;
-//     preview.classList.remove("d-none");
-//   };
-// }
+const dropEl = document.querySelector("#dropzone");
+const inputEl = document.querySelector("#input");
+const dropCtrl = new SimpleDropzone(dropEl, inputEl);
+
+dropzone.on("drop", ({ files }) => {
+  console.log(files);
+});
+

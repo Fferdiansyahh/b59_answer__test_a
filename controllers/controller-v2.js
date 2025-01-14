@@ -3,10 +3,13 @@ const config = require("../config/config.json");
 const { SELECT } = require("sequelize/lib/query-types");
 const bcrypt = require("bcrypt");
 const { types } = require("pg");
-const { Myproject, User } = require("../models");
+const { Heroes, User, Type } = require("../models");
 const session = require("express-session");
-const Swal = require("sweetalert2");
 const fs = require("fs");
+const $ = require("jquery");
+const path = require("path");
+
+const Swal = require("sweetalert2");
 
 const saltRound = 10;
 
@@ -36,15 +39,26 @@ function renderHome(req, res) {
 
 async function authRegister(req, res) {
   const { username, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, saltRound);
-  const user = await User.create({
-    username,
-    email,
-    password: hashedPassword,
-  });
+  const userCheck = await User.findOne({ where: { username } });
+  const emailCheck = await User.findOne({ where: { email } });
 
-  req.flash("success", "Berhasil Mendaftar silahkan login");
-  res.redirect("/login");
+  if (userCheck) {
+    req.flash("error", "User Already Exists.");
+    res.redirect("/register");
+  } else if (emailCheck) {
+    req.flash("error", "Email Already Exists.");
+    res.redirect("/register");
+  } else {
+    const hashedPassword = await bcrypt.hash(password, saltRound);
+    const user = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    req.flash("success", "Berhasil Mendaftar silahkan login");
+    res.redirect("/login");
+  }
 }
 
 async function authLogin(req, res) {
@@ -60,6 +74,12 @@ async function authLogin(req, res) {
   const isValidated = await bcrypt.compare(password, user.password);
   if (!isValidated) {
     req.flash("error", "Password incorrect.");
+    Swal.fire({
+      title: "Edited!",
+      text: "Heroes has been edited .",
+      icon: "Success",
+      background: "#1d2333",
+    });
     return res.redirect("login");
   }
 
@@ -72,10 +92,10 @@ async function authLogin(req, res) {
   res.redirect("/");
 }
 
-//my project
-async function renderMyproject(req, res) {
+//my heroes
+async function renderMyheroes(req, res) {
   const { user } = req.session;
-  const myprojects = await Myproject.findAll({
+  const myheroes = await Heroes.findAll({
     include: {
       model: User,
       as: "user",
@@ -83,8 +103,8 @@ async function renderMyproject(req, res) {
     },
     order: [["createdAt", "DESC"]],
   });
-  // console.log(myprojects[1]);
-  res.render("myproject", { blogs: myprojects, user });
+  // console.log(myheroes[1]);
+  res.render("myheroes", { blogs: myheroes, user });
 }
 
 function authLogout(req, res) {
@@ -93,31 +113,26 @@ function authLogout(req, res) {
   res.redirect("login");
 }
 
-function renderCreatemyproject(req, res) {
+function renderCreatemyheroes(req, res) {
   const { user } = req.session;
 
   if (user) {
-    res.render("project-add", { user });
+    res.render("heroes-add", { user });
   } else {
     res.redirect("/login");
   }
 }
 
-async function updateProject(req, res) {
+async function updateHeroes(req, res) {
   let user = req.session.user;
   const { id } = req.params;
-  const projectEdit = await Myproject.findOne({ where: { id } });
-
-  const image = "http://localhost:3030/" + req.file.path;
-
-  if (image === null) {
-    image = "./uploads/" + projectEdit.image.split("\\").pop().split("/").pop();
-  }
+  const heroesEdit = await Heroes.findOne({ where: { id } });
+  const image = "http://localhost:4040/" + req.file.path;
 
   let imagepPath =
-    "./uploads/" + projectEdit.image.split("\\").pop().split("/").pop();
+    "./uploads/" + heroesEdit.photo.split("\\").pop().split("/").pop();
   let imageOld = "./uploads/" + image.split("\\").pop().split("/").pop();
-  console.log("Image Local", req.file.path);
+  console.log("Image Patch", req.file.path);
   console.log("Image Local", imageOld);
   console.log("Image path", imagepPath);
   if (imagepPath !== imageOld) {
@@ -130,17 +145,17 @@ async function updateProject(req, res) {
     }
   }
 
-  if (projectEdit.user_id === user.id) {
-    const { name, sdate, edate, message, technologies } = req.body;
+  if (heroesEdit.user_id === user.id) {
+    const { name, type } = req.body;
     // const image = req.file.path;
-    const result = await Myproject.update(
+    console.log("Gambar", image);
+    const result = await Heroes.update(
       {
         name,
-        sdate,
-        edate,
-        image,
-        message,
-        technologies,
+
+        type_id: type,
+        photo: image,
+
         updatedAt: sequelize.fn("NOW"),
         // image,
       },
@@ -149,31 +164,33 @@ async function updateProject(req, res) {
       }
     );
     console.log(result);
-    res.redirect("/myproject");
+    res.redirect("/");
   } else {
-    req.flash("error", "Edit your project only");
-    res.redirect("/myproject");
+    req.flash("error", "Edit your heroes only");
+    res.redirect("/");
   }
 }
-async function renderProjectEdit(req, res) {
+
+async function renderHeroesEdit(req, res) {
   const { user } = req.session;
   const { id } = req.params;
 
-  const projectEdit = await Myproject.findOne({ where: { id } });
+  const heroesEdit = await Heroes.findOne({ where: { id } });
+  // console.log("user_id :", heroesEdit.user_id);
 
-  if (projectEdit.user_id === user.id) {
-    res.render("project-edit", { data: projectEdit, user });
-  } else if (projectEdit.user_id !== user.id) {
+  if (heroesEdit.user_id === user.id) {
+    res.render("heroes-edit", { data: heroesEdit, user });
+  } else if (heroesEdit.user_id !== user.id) {
     req.flash("error", "Access is not permitted");
-    res.redirect("/myproject");
+    res.redirect("/");
   }
 }
 
-async function renderProjectDetail(req, res) {
+async function renderHeroesDetail(req, res) {
   let { user } = req.session;
   const { id } = req.params;
 
-  const projectDetail = await Myproject.findOne({
+  const heroesDetail = await Heroes.findOne({
     include: {
       model: User,
       as: "user",
@@ -184,67 +201,183 @@ async function renderProjectDetail(req, res) {
     },
   });
 
-  if (projectDetail === null) {
-    res.render("page-404", { message: "Project", user });
+  if (heroesDetail === null) {
+    res.render("page-404", { message: "Heroes", user });
   } else {
-    // console.log(projectDetail);
+    // console.log(heroesDetail);
 
-    res.render("project-detail", { data: projectDetail, user });
+    res.render("heroes-detail", { data: heroesDetail, user });
   }
 }
 
-async function delProject(req, res) {
+async function delHeroes(req, res) {
   let { user } = req.session;
   const { id } = req.params;
-  const projectEdit = await Myproject.findOne({ where: { id } });
+  const heroesEdit = await Heroes.findOne({ where: { id } });
 
-  if (projectEdit.user_id === user.id) {
-    const result = Myproject.destroy({
+  if (heroesEdit.user_id === user.id) {
+    const result = Heroes.destroy({
       where: { id },
     });
 
     let imagepPath =
-      "./uploads/" + projectEdit.image.split("\\").pop().split("/").pop();    
-       
+      "./uploads/" + heroesEdit.photo.split("\\").pop().split("/").pop();
+
     console.log("Image path", imagepPath);
-   
-      try {
-        fs.unlinkSync(imagepPath);
-        console.log("File deleted!");
-      } catch (err) {
-        // Handle specific error if any
-        console.error(err.message);
-      }
-    
+
+    try {
+      fs.unlinkSync(imagepPath);
+      console.log("File deleted!");
+    } catch (err) {
+      // Handle specific error if any
+      console.error(err.message);
+    }
 
     // console.log("Result Query Delete :", result);
-    res.redirect("myproject");
+    res.redirect("/");
   } else {
-    res.redirect("myproject");
-    req.flash("error", "Delete your project only");
+    res.redirect("/");
+    req.flash("error", "Delete your heroes only");
   }
 }
-async function addProject(req, res) {
+async function addHeroes(req, res) {
   let { user } = req.session;
 
-  const { name, message, technologies = technologies, sdate, edate } = req.body;
-  // const image = "http://localhost:3030/Asset/image/mobil.jpg";
-  const image = "http://localhost:3030/" + req.file.path;
+  const { name, type } = req.body;
+  const image = "http://localhost:4040/" + req.file.path;
   // console.log("Hasil Gambar".req.file.path);
   console.log("Gambar upload", req.file);
-  const result = await Myproject.create({
+  const result = await Heroes.create({
     name,
-    message,
-    technologies,
-    sdate,
-    edate,
-    image,
+
+    photo: image,
+    type_id: type,
     user_id: user.id,
     createdAt: sequelize.fn("NOW"),
     updatedAt: sequelize.fn("NOW"),
   });
 
-  res.redirect("myproject");
+  res.redirect("/");
+}
+
+function renderCreatemytype(req, res) {
+  const { user } = req.session;
+
+  if (user) {
+    res.render("type-add", { user });
+  } else {
+    res.redirect("/login");
+  }
+}
+
+async function updateType(req, res) {
+  let user = req.session.user;
+  const { id } = req.params;
+  const heroesEdit = await Type.findOne({ where: { id } });
+  const image = "http://localhost:4040/" + req.file.path;
+
+  let imagepPath =
+    "./uploads/" + heroesEdit.image.split("\\").pop().split("/").pop();
+  let imageOld = "./uploads/" + image.split("\\").pop().split("/").pop();
+  console.log("Image Patch", req.file.path);
+  console.log("Image Local", imageOld);
+  console.log("Image path", imagepPath);
+  if (imagepPath !== imageOld) {
+    try {
+      fs.unlinkSync(imagepPath);
+      console.log("File deleted!");
+    } catch (err) {
+      // Handle specific error if any
+      console.error(err.message);
+    }
+  }
+
+  if (heroesEdit.user_id === user.id) {
+    const { name, type } = req.body;
+    // const image = req.file.path;
+    console.log("Gambar", image);
+    const result = await Type.update(
+      {
+        typename: name,
+        type_id: type,
+        image: image,
+        updatedAt: sequelize.fn("NOW"),
+        // image,
+      },
+      {
+        where: { id: id },
+      }
+    );
+    console.log(result);
+    res.redirect("/");
+  } else {
+    req.flash("error", "Edit your heroes only");
+    res.redirect("/");
+  }
+}
+
+async function renderTypeEdit(req, res) {
+  const { user } = req.session;
+  const { id } = req.params;
+
+  const heroesEdit = await Type.findOne({ where: { id } });
+  // console.log("user_id :", heroesEdit.user_id);
+
+  if (heroesEdit.user_id === user.id) {
+    res.render("heroes-edit", { data: heroesEdit, user });
+  } else if (heroesEdit.user_id !== user.id) {
+    req.flash("error", "Access is not permitted");
+    res.redirect("/");
+  }
+}
+async function delTypes(req, res) {
+  let { user } = req.session;
+  const { id } = req.params;
+  const heroesEdit = await Type.findOne({ where: { id } });
+
+  if (heroesEdit.user_id === user.id) {
+    const result = Type.destroy({
+      where: { id },
+    });
+
+    let imagepPath =
+      "./uploads/" + heroesEdit.image.split("\\").pop().split("/").pop();
+
+    console.log("Image path", imagepPath);
+
+    try {
+      fs.unlinkSync(imagepPath);
+      console.log("File deleted!");
+    } catch (err) {
+      // Handle specific error if any
+      console.error(err.message);
+    }
+
+    // console.log("Result Query Delete :", result);
+    res.redirect("/");
+  } else {
+    res.redirect("/");
+    req.flash("error", "Delete your heroes only");
+  }
+}
+async function addType(req, res) {
+  let { user } = req.session;
+
+  const { name, type } = req.body;
+  const image = "http://localhost:4040/" + req.file.path;
+  // console.log("Hasil Gambar".req.file.path);
+  console.log("Gambar upload", req.file);
+  const result = await Type.create({
+    typename: name,
+
+    image: image,
+    type_id: type,
+    user_id: user.id,
+    createdAt: sequelize.fn("NOW"),
+    updatedAt: sequelize.fn("NOW"),
+  });
+
+  res.redirect("/");
 }
 
 // tesimonial
@@ -269,16 +402,19 @@ module.exports = {
   authLogin,
   authLogout,
   renderHome,
-  renderMyproject,
-  renderCreatemyproject,
-  renderProjectDetail,
-  renderProjectEdit,
-  updateProject,
+  renderMyheroes,
+  renderCreatemyheroes,
+  renderCreatemytype,
+  renderHeroesDetail,
+  renderHeroesEdit,
+  renderTypeEdit,
+  updateHeroes,
+  updateType,
   renderTestimonial,
   renderContact,
-
   render404,
-
-  addProject,
-  delProject,
+  addHeroes,
+  delHeroes,
+  addType,
+  delTypes,
 };

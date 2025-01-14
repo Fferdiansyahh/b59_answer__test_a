@@ -7,12 +7,12 @@ const hbs = require("hbs");
 require("dotenv").config();
 
 const {
-  renderMyproject,
-  renderProjectDetail,
-  renderProjectEdit,
-  updateProject,
-  addProject,
-  delProject,
+  renderMyheroes,
+  renderHeroesDetail,
+  renderHeroesEdit,
+  updateHeroes,
+  addHeroes,
+  delHeroes,
   renderLogin,
   renderRegister,
   authRegister,
@@ -20,9 +20,14 @@ const {
   authLogout,
   renderHome,
   renderContact,
-  renderCreatemyproject,
+  renderCreatemyheroes,
   renderTestimonial,
   render404,
+  delTypes,
+  renderTypeEdit,
+  updateType,
+  addType,
+  renderCreatemytype,
 } = require("./controllers/controller-v2");
 
 const {
@@ -51,12 +56,10 @@ const {
   classIconsc,
   classIconsd,
 } = require("./utils/check.js");
-const {
-  sendAlert,
-  confirmDelProject,
-  alertLogin,
-} = require("./utils/alert.js");
+const { confirmDelProj, alertLogin } = require("./utils/alert.js");
+
 const upload = require("./middlewares/upload-file.js");
+const { sendAlert } = require("./Asset/js/alerts.js");
 
 const app = express();
 const port = process.env.SERVER_PORT || 3330;
@@ -81,6 +84,7 @@ app.set("views", path.join(__dirname, "./views"));
 
 app.use("/asset", express.static(path.join(__dirname, "./asset")));
 app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
+app.use("/utils", express.static(path.join(__dirname, "./utils")));
 
 hbs.registerPartials(__dirname + "/views/partials", function (err) {});
 hbs.registerHelper("getRelativeTime", getRelativeTime);
@@ -95,7 +99,7 @@ hbs.registerHelper("checkboxInputa", checkboxInputa);
 hbs.registerHelper("checkboxInputb", checkboxInputb);
 hbs.registerHelper("checkboxInputc", checkboxInputc);
 hbs.registerHelper("checkboxInputd", checkboxInputd);
-hbs.registerHelper("sendAlert", sendAlert);
+// hbs.registerHelper("sendAlert", sendAlert);
 
 hbs.registerHelper("attributeIconsa", attributeIconsa);
 hbs.registerHelper("attributeIconsb", attributeIconsb);
@@ -105,13 +109,15 @@ hbs.registerHelper("classIconsa", classIconsa);
 hbs.registerHelper("classIconsb", classIconsb);
 hbs.registerHelper("classIconsc", classIconsc);
 hbs.registerHelper("classIconsd", classIconsd);
-hbs.registerHelper("confirmDelProject", confirmDelProject);
+hbs.registerHelper("confirmDelProj", confirmDelProj);
+sendAlert;
+hbs.registerHelper("sendAlert", sendAlert);
 hbs.registerHelper("getDuring", getDuring);
 hbs.registerHelper("equal", function (a, b) {
   return a === b;
 });
 
-app.get("/", renderHome);
+// app.get("/", renderHome);
 
 app.get("/testimonial", renderTestimonial);
 app.get("/login", renderLogin);
@@ -121,17 +127,20 @@ app.post("/login", authLogin);
 app.post("/register", authRegister);
 app.get("/logout", authLogout);
 
-app.get("/myproject", renderMyproject);
-app.get("/project-add", renderCreatemyproject);
-app.get("/project-edit/:id", renderProjectEdit);
-app.patch("/project-update:id", upload.single("image"), updateProject);
+app.get("/", renderMyheroes);
+app.get("/heroes-add", renderCreatemyheroes);
+app.get("/type-add", renderCreatemytype);
+app.get("/heroes-edit/:id", renderHeroesEdit);
+app.get("/type-edit/:id", renderTypeEdit);
+app.patch("/heroes-update:id", upload.single("image"), updateHeroes);
+app.patch("/type-update:id", upload.single("image"), updateType);
 
-// app.post("/delete-proj:id");
-app.delete("/delete-project:id", delProject);
-app.get("/project-detail/:id", renderProjectDetail);
-app.get("/contact", renderContact);
+app.delete("/delete-heroes:id", delHeroes);
+app.delete("/delete-type:id", delTypes);
+app.get("/heroes-detail/:id", renderHeroesDetail);
 
-app.post("/project-add", upload.single("image"), addProject);
+app.post("/heroes-add", upload.single("image"), addHeroes);
+app.post("/type-add", upload.single("image"), addType);
 app.get("/404", render404);
 
 app.listen(port, () => {

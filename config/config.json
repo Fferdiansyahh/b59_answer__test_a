@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "admin",
-    "database": "b59_personalweb",
+    "database": "b59_wikigame",
     "host": "127.0.0.1",
     "port": "5432",
     "dialect": "postgres"
@@ -10,17 +10,18 @@
   "test": {
     "username": "postgres",
     "password": "admin",
-    "database": "b59_personalweb",
+    "database": "b59_wikigame",
     "host": "127.0.0.1",
     "port": "5432",
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "admin",
-    "database": "b59_personalweb",
+    "username": "b59_wikigame_owner",
+    "password": "0UXug3BWbwhs",
+    "database": "b59_wikigame",
     "host": "127.0.0.1",
     "port": "5432",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "ssl": true
   }
 }

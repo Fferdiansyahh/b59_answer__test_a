@@ -1,0 +1,24 @@
+{{#> layout title='Heroes Detail' user=user}}
+  <main class="kotak1 shadow">
+    <section class="blog-container">
+      <div class="blog-detail-container">              
+        <div class="blog-detail-content">
+          <img class="blog-detail-image rounded" src={{data.image}} alt="Detail Blog Image">
+
+        <div class="detail-content">          
+          <div class="mb-2"><h2>{{data.name}}</h2> </div> 
+          <div>
+          <p class="detail-blog-content"> Duration : {{getDuring data.sdate data.edate}}</p>
+          <p class="mb-0">{{formatDataToWIB data.createdAt}} | {{data.user.username}}</p> 
+          
+                  
+            <p class="mt-5" >{{data.message}}</p>
+            <p class="relative-time">{{getRelativeTime data.postedAt}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+{{/layout}}

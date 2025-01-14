@@ -1,0 +1,45 @@
+{{#> layout title='Edit Type' user=user}}
+
+  <main class="contact-section">
+    <div class="form-edit">
+    <form action="/type-update{{data.id}}?_method=patch" method="post" class="contact-form-edit" enctype="multipart/form-data">
+      <div class="form-title">
+        <h2>EDIT TYPE</h2>
+      </div>
+      <div class="form-field">
+        <label for="name">Type Name</label>
+        <input id="name" name="name" class="form-input" type="text" value="{{data.name}}" required />
+      </div>
+      <div class="form-field">
+        <label for="type">Type Type</label>
+        <input id="type" name="type" class="form-input" type="text" value="{{data.name}}" required />
+      </div>
+      <div></div>
+    
+
+     
+
+     
+   
+
+
+
+      <div class="form-field-image">       
+          <label for="image" class="form-label">Upload Image</label>
+          <input id="image" name="image" class="form-control form-input" type="file" accept=".png, .jpg, .jpeg" href="/Asset/image/blog-image.png">
+      </div>
+
+            
+      <div ><button id="button-edit"  type="submit" class="form-submit-button d-none" hidden>Submit</button></div>       
+      <div class="w-100 text-center">
+          <img id="preview" src={{data.photo}} alt="image preview" class="img-thumbnail" style="max-width: 100%"></img>
+      </div>
+      </form>
+    <div class="form-button"><button onclick="return confirmEdit()" class="form-submit-button-edit mt-3 mr-0">Edit Type</button></div>
+</div>
+  
+ <script src="/asset/js/image-preview.js"></script>
+    
+  </main>
+
+{{/layout}}
